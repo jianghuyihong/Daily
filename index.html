@@ -8,6 +8,10 @@
     <script src="jquery.min.js"></script>
     <title>生成日报</title>
     <style>
+        /* html body {
+            min-height: 100%;
+        } */
+
         .btn span,
         .btnS span {
             cursor: pointer;
@@ -53,19 +57,19 @@
 </head>
 
 <body>
-    <div class="Name"><span id="position">前端：陈吉</span><span id="date"></span></div>
-    <div class="Name">到班时间：<span id="Startwork"></span></div>
-    <div class="Name">下班时间：<span id="Endwork"></span></div>
-    <div class="Name">本周工作时长：<span id="workTime">0</span>/<span id="workDay">0</span></div>
-    <div class="Name">主要工作及进度：<div id="workContent">无</div>
+    <div class="Name"><span id="position" class="editElement">前端：陈吉</span><span id="date"></span></div>
+    <div class="Name">到班时间：<span id="Startwork" class="editElement"></span></div>
+    <div class="Name">下班时间：<span id="Endwork" class="editElement"></span></div>
+    <div class="Name">本周工作时长：<span id="workTime" class="editElement">0</span>/<span id="workDay" class="editElement">0</span></div>
+    <div class="Name">主要工作及进度：<div id="workContent" class="editElement">无</div>
     </div>
-    <div class="Name">延迟任务解决方案：<div id="workContentDelay">无</div>
+    <div class="Name">延迟任务解决方案：<div id="workContentDelay" class="editElement">无</div>
     </div>
-    <div class="Name">其他工作及进度：<div id="workContentOther">1、协同同事解决问题</div>
+    <div class="Name">其他工作及进度：<div id="workContentOther" class="editElement">1、协同同事解决问题</div>
     </div>
-    <div class="Name">收集到的需求：<div id="workContentFatch">无</div>
+    <div class="Name">收集到的需求：<div id="workContentFatch" class="editElement">无</div>
     </div>
-    <div class="Name">明日工作计划：<div id="workContentPlay">1、修正IES测试Bug</div>
+    <div class="Name">明日工作计划：<div id="workContentPlay" class="editElement">1、修正IES测试Bug</div>
     </div>
     <div class="btn"><span onclick="Endwork()">下班</span></div>
     <div class="btnS"><span onclick="EndworkS()">保存</span></div>
@@ -149,59 +153,18 @@
             }
         }
 
-        //编辑职位
-        $("#position").click(function () {
-            $(this).attr("contentEditable", true);  //开启编辑模式
-        })
 
-        //编辑到班时间
-        $("#Startwork").click(function () {
+        //点击可编辑的元素（editElement）
+        $("body").on("click", ".editElement", function (e) {
+            e.stopPropagation();
             $(this).attr("contentEditable", true);  //开启编辑模式
-        })
-        //编辑下班时间
-        $("#Endwork").click(function () {
-            $(this).attr("contentEditable", true);  //开启编辑模式
-        })
-
-        //编辑工作时长
-        $("#workTime").click(function () {
-            $(this).attr("contentEditable", true);  //开启编辑模式
-        })
-
-        //编辑工作时长
-        $("#workTime").click(function () {
-            $(this).attr("contentEditable", true);  //开启编辑模式
-        })
-
-        //编辑工作天数
-        $("#workDay").click(function () {
-            $(this).attr("contentEditable", true);  //开启编辑模式
+            $(this).parents(".Name").siblings().find(".editElement").removeAttr("contentEditable");  //关闭编辑模式
         })
 
 
-        //编辑主要工作及进度
-        $("#workContent").click(function () {
-            $(this).attr("contentEditable", true);  //开启编辑模式
-        })
-
-        //编辑延迟任务解决方案
-        $("#workContentDelay").click(function () {
-            $(this).attr("contentEditable", true);  //开启编辑模式
-        })
-
-        //编辑其他工作及进度：
-        $("#workContentOther").click(function () {
-            $(this).attr("contentEditable", true);  //开启编辑模式
-        })
-
-        //编辑收集到的需求：
-        $("#workContentFatch").click(function () {
-            $(this).attr("contentEditable", true);  //开启编辑模式
-        })
-
-        //编辑明日工作计划：
-        $("#workContentPlay").click(function () {
-            $(this).attr("contentEditable", true);  //开启编辑模式
+        //点击不可编辑的元素
+        $(document).click(function () {
+            $(".editElement").removeAttr("contentEditable");  //关闭编辑模式
         })
     </script>
 </body>
