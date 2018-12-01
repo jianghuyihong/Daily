@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="jquery.min.js"></script>
+    <title>生成日报</title>
+    <style>
+        .btn span,
+        .btnS span {
+            cursor: pointer;
+            background: #ccc;
+            width: 100px;
+            height: 100px;
+            display: block;
+            text-align: center;
+            line-height: 100px;
+            margin: 20px;
+            border-radius: 4px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: 1s
+        }
+
+        .btnS span {
+            right: 120px;
+            background: #86c3e8;
+            color: #fff;
+        }
+
+        .Name {
+            font-size: 14px;
+            line-height: 25px;
+        }
+
+        .btn span:hover {
+            background: #333333;
+            color: #fff;
+        }
+
+        .btnS span:hover {
+            background: red;
+            color: #fff;
+        }
+
+        span#date {
+            padding-left: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="Name"><span id="position">前端：陈吉</span><span id="date"></span></div>
+    <div class="Name">到班时间：<span id="Startwork"></span></div>
+    <div class="Name">下班时间：<span id="Endwork"></span></div>
+    <div class="Name">本周工作时长：<span id="workTime">0</span>/<span id="workDay">0</span></div>
+    <div class="Name">主要工作及进度：<div id="workContent">无</div>
+    </div>
+    <div class="Name">延迟任务解决方案：<div id="workContentDelay">无</div>
+    </div>
+    <div class="Name">其他工作及进度：<div id="workContentOther">1、协同同事解决问题</div>
+    </div>
+    <div class="Name">收集到的需求：<div id="workContentFatch">无</div>
+    </div>
+    <div class="Name">明日工作计划：<div id="workContentPlay">1、修正IES测试Bug</div>
+    </div>
+    <div class="btn"><span onclick="Endwork()">下班</span></div>
+    <div class="btnS"><span onclick="EndworkS()">保存</span></div>
+    <script>
+
+        //获取下班时间函数
+        let Endwork = () => {
+            console.log("下班");
+            $("#Endwork").html(new Date().toTimeString().slice(0, 5));  //赋值下班班时间
+
+            //计算多少小时
+            let _h = parseFloat($("#Endwork").html().split(":")[0]).toFixed(1) - parseFloat($("#Startwork").html().split(":")[0]).toFixed(1);  //计算小时
+            let _T = 0; //计算分钟
+            if ($("#Endwork").html().split(":")[0] == $("#Startwork").html().split(":")[0]) {
+                _T = parseInt($("#Endwork").html().split(":")[1]) - parseInt($("#Startwork").html().split(":")[1]); //计算分钟
+            }
+            else {
+                _T = parseInt($("#Endwork").html().split(":")[1]) + 60 - parseInt($("#Startwork").html().split(":")[1]); //计算分钟
+            }
+
+            console.log(_T);
+            if (_T >= 0 && _T <= 15) {
+                _T = 0.1
+            }
+            if (_T > 15 && _T <= 25) {
+                _T = 0.2
+            }
+            if (_T > 25 && _T <= 35) {
+                _T = 0.3
+            }
+            if (_T > 35 && _T <= 45) {
+                _T = 0.4
+            }
+            if (_T > 45 && _T <= 55) {
+                _T = 0.5
+            }
+            if (_T >= 55) {
+                _T = 1
+            }
+            console.log(_T);
+            console.log(_h);
+            $("#workTime").html(_h + _T + parseFloat(localStorage.getItem("_workTime")));
+            //计算多少天
+            $("#workDay").html(parseInt(localStorage.getItem("_workDay")) + 1)
+        }
+
+        //获取下班时间函数
+        let EndworkS = () => {
+            //计算多少小时
+            localStorage.setItem("_workTime", $("#workTime").html()); //本地缓存上班时长
+            //计算多少天
+            localStorage.setItem("_workDay", $("#workDay").html()); //本地缓存上班天数
+        }
+
+
+        //获取今天上班时间及日期
+        let _nowDate = new Date().toLocaleDateString();  //本地缓存上班日期
+        let _nowTime = new Date().toTimeString().slice(0, 5);  //本地缓存上班时间
+        let _lastDate = localStorage.getItem("_LastDate"); //获取本地缓存上一次的更新上班日期
+        if (_nowDate != _lastDate) {
+            localStorage.clear();  //清空所有的本地化缓存
+            localStorage.setItem("_LastDate", _nowDate); //本地缓存上班日期
+            localStorage.setItem("_nowTime", _nowTime); //本地缓存上班时间
+            if (new Date().getDay() == 1) {
+                localStorage.setItem("_workDay", 1); //本地缓存上班天数
+                localStorage.setItem("_workTime", 0); //本地缓存上班时长
+            }
+            $("#Startwork").html(new Date().toTimeString().slice(0, 5));  //赋值上班时间
+        } else {
+            let _date = _lastDate.split("/");  //获取日期
+            $("#date").html(`${_date[0]}年${_date[1]}月${_date[2].length == 1 ? "0" + _date[2] : _date[2]}日`);  //赋值上班时间
+            $("#Startwork").html(localStorage.getItem("_nowTime"));  //赋值上班时间
+            console.log(localStorage.getItem("_workTime"))
+            //初始化时长
+            if (localStorage.getItem("_workTime") == null) {
+                localStorage.setItem("_workTime", 0);
+            }
+            //初始化上班天数
+            if (localStorage.getItem("_workDay") == null) {
+                localStorage.setItem("_workDay", 0);
+            }
+        }
+
+        //编辑职位
+        $("#position").click(function () {
+            $(this).attr("contentEditable", true);  //开启编辑模式
+        })
+
+        //编辑到班时间
+        $("#Startwork").click(function () {
+            $(this).attr("contentEditable", true);  //开启编辑模式
+        })
+        //编辑下班时间
+        $("#Endwork").click(function () {
+            $(this).attr("contentEditable", true);  //开启编辑模式
+        })
+
+        //编辑工作时长
+        $("#workTime").click(function () {
+            $(this).attr("contentEditable", true);  //开启编辑模式
+        })
+
+        //编辑工作时长
+        $("#workTime").click(function () {
+            $(this).attr("contentEditable", true);  //开启编辑模式
+        })
+
+        //编辑工作天数
+        $("#workDay").click(function () {
+            $(this).attr("contentEditable", true);  //开启编辑模式
+        })
+
+
+        //编辑主要工作及进度
+        $("#workContent").click(function () {
+            $(this).attr("contentEditable", true);  //开启编辑模式
+        })
+
+        //编辑延迟任务解决方案
+        $("#workContentDelay").click(function () {
+            $(this).attr("contentEditable", true);  //开启编辑模式
+        })
+
+        //编辑其他工作及进度：
+        $("#workContentOther").click(function () {
+            $(this).attr("contentEditable", true);  //开启编辑模式
+        })
+
+        //编辑收集到的需求：
+        $("#workContentFatch").click(function () {
+            $(this).attr("contentEditable", true);  //开启编辑模式
+        })
+
+        //编辑明日工作计划：
+        $("#workContentPlay").click(function () {
+            $(this).attr("contentEditable", true);  //开启编辑模式
+        })
+    </script>
+</body>
+
+</html>
