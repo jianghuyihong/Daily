@@ -77,7 +77,7 @@
 
         //获取下班时间函数
         let Endwork = () => {
-            console.log("下班");
+
             $("#Endwork").html(new Date().toTimeString().slice(0, 5));  //赋值下班班时间
 
             //计算多少小时
@@ -90,7 +90,6 @@
                 _T = parseInt($("#Endwork").html().split(":")[1]) + 60 - parseInt($("#Startwork").html().split(":")[1]); //计算分钟
             }
 
-            console.log(_T);
             if (_T >= 0 && _T <= 15) {
                 _T = 0.1
             }
@@ -109,9 +108,8 @@
             if (_T >= 55) {
                 _T = 1
             }
-            console.log(_T);
-            console.log(_h);
             $("#workTime").html(_h + _T + parseFloat(localStorage.getItem("_workTime")));
+
             //计算多少天
             $("#workDay").html(parseInt(localStorage.getItem("_workDay")) + 1)
         }
@@ -142,7 +140,6 @@
             let _date = _lastDate.split("/");  //获取日期
             $("#date").html(`${_date[0]}年${_date[1]}月${_date[2].length == 1 ? "0" + _date[2] : _date[2]}日`);  //赋值上班时间
             $("#Startwork").html(localStorage.getItem("_nowTime"));  //赋值上班时间
-            console.log(localStorage.getItem("_workTime"))
             //初始化时长
             if (localStorage.getItem("_workTime") == null) {
                 localStorage.setItem("_workTime", 0);
