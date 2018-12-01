@@ -53,6 +53,10 @@
         span#date {
             padding-left: 8px;
         }
+
+        .editElementClick {
+            border: 2px solid #95d0f3;
+        }
     </style>
 </head>
 
@@ -155,13 +159,16 @@
         $("body").on("click", ".editElement", function (e) {
             e.stopPropagation();
             $(this).attr("contentEditable", true);  //开启编辑模式
+            $(this).addClass("editElementClick");   //添加编辑样式
             $(this).parents(".Name").siblings().find(".editElement").removeAttr("contentEditable");  //关闭编辑模式
+            $(this).parents(".Name").siblings().find(".editElement").removeClass("editElementClick");  //移除编辑样式
         })
 
 
         //点击不可编辑的元素
         $(document).click(function () {
             $(".editElement").removeAttr("contentEditable");  //关闭编辑模式
+            $(".editElement").removeClass("editElementClick");  //移除编辑样式
         })
     </script>
 </body>
