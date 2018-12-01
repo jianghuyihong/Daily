@@ -15,8 +15,8 @@ Daily work report<br>
 >>4、_workDay     当前星期的第几天<br>
 >>5、_workTime    当前星期上班的时间长度<br>
 
-说明：<br>
->>1、点击样式选择器editElement则开启此标签的编辑模式，反之关闭该元素的编辑模式<br>
->>2、如果当天是星期一，也就是new Date().getDay() ==1,则设置 <br>
+###说明：<br>
+1、点击样式选择器editElement则开启此标签的编辑模式，反之关闭该元素的编辑模式<br>
+2、如果当天是星期一，也就是new Date().getDay() ==1,则设置 <br>
 -localStorage.setItem("_workDay", 1);    本地缓存上班天数<br>
 -localStorage.setItem("_workTime", 0);   本地缓存上班时长<br>
