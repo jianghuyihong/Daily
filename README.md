@@ -20,3 +20,6 @@ Daily work report<br>
 >>2、如果当天是星期一，也就是new Date().getDay() ==1,则设置 <br>
 >>>>localStorage.setItem("_workDay", 1);    本地缓存上班天数<br>
 >>>>localStorage.setItem("_workTime", 0);   本地缓存上班时长<br>
+
+图片说明：<br>
+![图片](https://github.com/jianghuyihong/Daily/blob/master/img/daily.png)
