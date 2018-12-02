@@ -1,0 +1,84 @@
+@font-face {
+  font-family: 'iconfont';
+  src: url('../font/iconfont.eot');
+  src: url('../font/iconfont.eot?#iefix') format('../font/embedded-opentype'), url('../font/iconfont.woff') format('woff'), url('../font/iconfont.ttf') format('truetype'), url('../font/iconfont.svg#iconfont') format('svg');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: .2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.btn span,
+.btnCount span,
+.btnS span {
+  cursor: pointer;
+  background: #ccc;
+  width: 100px;
+  height: 100px;
+  display: block;
+  text-align: center;
+  line-height: 100px;
+  margin: 20px;
+  border-radius: 4px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 1s;
+}
+
+.btnS span {
+  right: 120px;
+  background: #86c3e8;
+  color: #fff;
+}
+
+.btnCount span {
+  right: 240px;
+  background: #86c3e8;
+  color: #fff;
+}
+
+.Name {
+  font-size: 14px;
+  line-height: 25px;
+  color: #ccc;
+}
+
+.btn span:hover {
+  background: red;
+  color: #fff;
+}
+
+.btnCount span:hover,
+.btnS span:hover {
+  background: rgb(15, 15, 15);
+  color: #fff;
+}
+
+span#date {
+  padding-left: 8px;
+}
+
+.editElementClick {
+  border: 2px solid #95d0f3;
+}
+
+.editElement {
+  color: #000;
+}
+
+/* 添加按钮 */
+div#addContent {
+    position: absolute;
+    display: none;
+    cursor: pointer;
+}
+div#addContent:hover {
+    color: rgb(15, 153, 218);
+    font-weight: 800;
+}
