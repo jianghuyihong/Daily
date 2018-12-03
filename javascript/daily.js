@@ -1,27 +1,30 @@
 "use strict"
 
 //下班提示
-let Endwork=()=>{
+let Endwork = () => {
     //显示提示窗口
-    $("#popup").css("display","block")
+    $("#popup").css("display", "block")
 }
 
 //确认下班提示
-let popupOk=()=>{
+let popupOk = () => {
     //关闭提示窗口
-    $("#popup").css("display","none");
+    $("#popup").css("display", "none");
     //调用下班函数
     EndworkS();
 }
 
 //关闭下班提示
-let popupCancel=()=>{
+let popupCancel = () => {
     //关闭提示窗口
-    $("#popup").css("display","none")
+    $("#popup").css("display", "none")
 }
 
 //下班函数（保存所有数据）
 let EndworkS = () => {
+    //获取至今剩余任务数计算至今剩余任务数
+    let _Surplus = localStorage.getItem("_SurplusWork") == undefined ? 0 : localStorage.getItem("_SurplusWork");
+    _Surplus = _Surplus + parseInt($("#nowAddWork").html()) - $("#workContent>div").length;
     //计算下班时间
     totalTime();
     //保存本周的上班时长
@@ -30,14 +33,18 @@ let EndworkS = () => {
     localStorage.setItem("_workDay", $("#workDay").html()); //设置本地缓存上班天数
     //保存今天的日期
     localStorage.setItem("_lastDate", $("#date").html()); //设置本地缓存上班日期
-    //保存今天工作任务
-    localStorage.setItem("_workcontent", $("#workContent").html()); //设置本地缓存今天工作任务
-    //保存延迟任务解决方案
-    localStorage.setItem("_workContentDelay", $("#workContentDelay").html()); //设置本地缓存延迟任务解决方案
-    //保存其他工作及进度
-    localStorage.setItem("_workContentOther", $("#workContentOther").html()); //设置本地缓存其他工作及进度
-    //保存收集到的需求
-    localStorage.setItem("_workContentFatch", $("#workContentFatch").html()); //设置本地缓存收集到的需求
+    //保存至今剩余任务数
+    localStorage.setItem("_SurplusWork", _Surplus); //设置本地缓存至今剩余任务数
+    //保存今天的历史任务数
+    localStorage.setItem("_historyWork", parseInt($("#historyWork").html()) + parseInt($("#nowAddWork").html())); //设置本地缓存今天的历史任务数
+    //保存今日工作明细
+    localStorage.setItem("_workcontent", $("#workContent").html()); //设置本地缓存今日工作明细
+    // //保存延迟任务解决方案
+    // localStorage.setItem("_workContentDelay", $("#workContentDelay").html()); //设置本地缓存延迟任务解决方案
+    // //保存其他工作及进度
+    // localStorage.setItem("_workContentOther", $("#workContentOther").html()); //设置本地缓存其他工作及进度
+    // //保存收集到的需求
+    // localStorage.setItem("_workContentFatch", $("#workContentFatch").html()); //设置本地缓存收集到的需求
     //保存明日工作计划
     localStorage.setItem("_workContentPlay", $("#workContentPlay").html()); //设置本地缓存明日工作计划
 }
@@ -45,14 +52,16 @@ let EndworkS = () => {
 
 //保存工作记录
 let saveWork = () => {
-    //保存今天工作任务
-    localStorage.setItem("_workcontent", $("#workContent").html()); //设置本地缓存今天工作任务
-    //保存延迟任务解决方案
-    localStorage.setItem("_workContentDelay", $("#workContentDelay").html()); //设置本地缓存延迟任务解决方案
-    //保存其他工作及进度
-    localStorage.setItem("_workContentOther", $("#workContentOther").html()); //设置本地缓存其他工作及进度
-    //保存收集到的需求
-    localStorage.setItem("_workContentFatch", $("#workContentFatch").html()); //设置本地缓存收集到的需求
+    //保存今日新增任务数
+    localStorage.setItem("_nowAddWork", $("#nowAddWork").html()); //设置本地缓存今日新增任务数
+    //保存今日工作明细
+    localStorage.setItem("_workcontent", $("#workContent").html()); //设置本地缓存今日工作明细
+    // //保存延迟任务解决方案
+    // localStorage.setItem("_workContentDelay", $("#workContentDelay").html()); //设置本地缓存延迟任务解决方案
+    // //保存其他工作及进度
+    // localStorage.setItem("_workContentOther", $("#workContentOther").html()); //设置本地缓存其他工作及进度
+    // //保存收集到的需求
+    // localStorage.setItem("_workContentFatch", $("#workContentFatch").html()); //设置本地缓存收集到的需求
     //明日工作计划
     localStorage.setItem("_workContentPlay", $("#workContentPlay").html()); //设置本地缓存明日工作计划
 }
@@ -70,9 +79,7 @@ let totalTime = () => {
     }
     else {
         _T = parseInt($("#Endwork").html().split(":")[1]) + 60 - parseInt($("#Startwork").html().split(":")[1]); //计算分钟
-        if(parseInt($("#Endwork").html().split(":")[1]) - parseInt($("#Startwork").html().split(":")[1])>0){  //如果下班时间减去上班时间大于等于一小时
-            _h = parseFloat($("#Endwork").html().split(":")[0]).toFixed(1) - parseFloat($("#Startwork").html().split(":")[0]).toFixed(1);  //计算小时
-        }
+        _h = parseFloat($("#Endwork").html().split(":")[0]).toFixed(1) - parseFloat($("#Startwork").html().split(":")[0]).toFixed(1);  //计算小时
     }
     if (_T >= 0 && _T <= 15) {
         _T = 0.1
@@ -94,7 +101,20 @@ let totalTime = () => {
     }
     $("#workTime").html((parseFloat(_h) + parseFloat(_T) + parseFloat(localStorage.getItem("_workTime"))).toFixed(1));//计算小时
     //计算多少天
-    $("#workDay").html(parseInt(localStorage.getItem("_workDay")) + 1)
+    $("#workDay").html(parseInt(localStorage.getItem("_workDay")) + 1);
+    //计算本日工作时长
+    $("#nowWorkTime").html((parseFloat(_h) + parseFloat(_T)).toFixed(1));
+
+    //获取至今剩余任务数计算至今剩余任务数
+    let _Surplus = localStorage.getItem("_SurplusWork") == undefined ? 0 : localStorage.getItem("_SurplusWork");
+    if (_Surplus == 0)
+        _Surplus = parseInt($("#nowAddWork").html()) - $("#workContent>div").length;
+    else
+        _Surplus = parseInt(_Surplus) + parseInt($("#nowAddWork").html()) - $("#workContent>div").length;
+
+    //计算至今剩余任务数
+    $("#SurplusWork").html(_Surplus);
+
 }
 
 //初始化今天的数据
@@ -112,12 +132,14 @@ let init = () => {
         }
         let _date = new Date();  //今天的日期
         let _y = _date.getFullYear();  //今天的年份
-        let _m = _date.getMonth()+1;  //今天的月份
+        let _m = _date.getMonth() + 1;  //今天的月份
         let _d = _date.getDate().toString().length == 1 ? "0" + _date.getDate() : _date.getDate();  //今天的日
         console.log(`${_y}年${_m}月${_d}日`);
         console.log(_date.getDate().toString().length);
         $("#date").html(`${_y}年${_m}月${_d}日`);  //赋值上班日期
         $("#Startwork").html(new Date().toTimeString().slice(0, 5));  //赋值到班时间
+        $("#historyWork").html(localStorage.getItem("_historyWork") == undefined ? 0 : localStorage.getItem("_historyWork"));  //赋值历史任务数
+        $("#nowAddWork").html(0); //赋值今日新增任务数
         //初始化今天的工作任务
         workInit();
     } else {
@@ -132,6 +154,9 @@ let init = () => {
         if (localStorage.getItem("_workDay") == null) {
             localStorage.setItem("_workDay", 0);
         }
+
+        $("#historyWork").html(localStorage.getItem("_historyWork") == undefined ? 0 : localStorage.getItem("_historyWork"));  //赋值历史任务数
+        $("#nowAddWork").html(localStorage.getItem("_nowAddWork") == undefined ? 0 : localStorage.getItem("_nowAddWork")); //赋值今日新增任务数
         //初始化今天的工作任务
         workInit();
     }
@@ -142,12 +167,12 @@ let init = () => {
 let workInit = () => {
     //赋值今天工作任务
     $("#workContent").html(localStorage.getItem("_workcontent") == undefined ? `无` : localStorage.getItem("_workcontent")); //获取本地缓存今天工作任务
-    //赋值延迟任务解决方案
-    $("#workContentDelay").html(localStorage.getItem("_workContentDelay") == undefined ? `无` : localStorage.getItem("_workContentDelay")); //获取本地缓存延迟任务解决方案
-    //赋值其他工作及进度
-    $("#workContentOther").html(localStorage.getItem("_workContentOther") == undefined ? `无` : localStorage.getItem("_workContentOther")); //获取本地缓存其他工作及进度
-    //赋值收集到的需求
-    $("#workContentFatch").html(localStorage.getItem("_workContentFatch") == undefined ? `无` : localStorage.getItem("_workContentFatch")); //获取本地缓存收集到的需求
+    // //赋值延迟任务解决方案
+    // $("#workContentDelay").html(localStorage.getItem("_workContentDelay") == undefined ? `无` : localStorage.getItem("_workContentDelay")); //获取本地缓存延迟任务解决方案
+    // //赋值其他工作及进度
+    // $("#workContentOther").html(localStorage.getItem("_workContentOther") == undefined ? `无` : localStorage.getItem("_workContentOther")); //获取本地缓存其他工作及进度
+    // //赋值收集到的需求
+    // $("#workContentFatch").html(localStorage.getItem("_workContentFatch") == undefined ? `无` : localStorage.getItem("_workContentFatch")); //获取本地缓存收集到的需求
     //赋值明日工作计划
     $("#workContentPlay").html(localStorage.getItem("_workContentPlay") == undefined ? `无` : localStorage.getItem("_workContentPlay")); //获取本地缓存明日工作计划
 }
@@ -207,17 +232,17 @@ $(function () {
     $("#addContent").click(function () {
         if (obj.html() == "无") {
             if (obj.attr("id") == 'workContent') {
-                obj.html(`<div>1、【已完成】</div>`);   //主要工作及进度
+                obj.html(`<div>1.【任务bug 000】【已完成】(交接人：郭鑫鹤)</div>`);   //今日工作明细
             } else {
-                obj.html(`<div>1、</div>`)
+                obj.html(`<div>1.【任务bug 000】【未完成】(交接人：郭鑫鹤)</div>`)
             }
 
         } else {
             let _num = obj.find("div").eq(obj.children().length - 1).text().split("、")[0];  //获取子元素的最后一位的序号
             if (obj.attr("id") == 'workContent') {
-                obj.append(`<div>${parseInt(_num) + 1}、【已完成】</div>`);   //主要工作及进度
+                obj.append(`<div>${parseInt(_num) + 1}.【任务bug 000】【已完成】(交接人：郭鑫鹤)</div>`);   //今日工作明细
             } else {
-                obj.append(`<div>${parseInt(_num) + 1}、</div>`)
+                obj.append(`<div>${parseInt(_num) + 1}.【任务bug 000】【未完成】(交接人：郭鑫鹤)</div>`)
             }
         }
     })

@@ -14,12 +14,16 @@
     <div class="Name"><span id="position" class="editElement">前端：陈吉</span><span id="date"></span></div>
     <div class="Name">到班时间：<span id="Startwork" class="editElement"></span></div>
     <div class="Name">下班时间：<span id="Endwork" class="editElement"></span></div>
-    <div class="Name"><span class="title">本周工作时长：</span><span id="workTime" class="editElement">0</span>/<span id="workDay"
+    <div class="Name"><span >本日工作时长：</span><span id="nowWorkTime" class="editElement">0</span></div>
+    <div class="Name"><span >本周工作时长：</span><span id="workTime" class="editElement">0</span>/<span id="workDay"
             class="editElement">0</span></div>
-    <div class="Name"><span class="title">主要工作及进度：</span>
+    <div class="Name">历史任务数：<span id="historyWork" class="editElement">0</span></div>
+    <div class="Name">今日新增任务数：<span id="nowAddWork" class="editElement">0</span></div>
+    <div class="Name">至今剩余任务数：<span id="SurplusWork" class="editElement">0</span></div>
+    <div class="Name" id="workContentWrap"><span class="title">今日工作明细</span>
         <div id="workContent" class="editElement">无</div>
     </div>
-    <div class="Name"><span class="title">延迟任务解决方案：</span>
+    <!-- <div class="Name"><span class="title">延迟任务解决方案：</span>
         <div id="workContentDelay" class="editElement">无</div>
     </div>
     <div class="Name"><span class="title">其他工作及进度：</span>
@@ -27,11 +31,11 @@
     </div>
     <div class="Name"><span class="title">收集到的需求：</span>
         <div id="workContentFatch" class="editElement">无</div>
+    </div> -->
+    <div class="Name" id="workContentPlayWrap"><span class="title">明日工作计划：</span>
+        <div id="workContentPlay" class="editElement">无</div>
     </div>
-    <div class="Name"><span class="title">明日工作计划：</span>
-        <div id="workContentPlay" class="editElement">1、修正IES测试Bug</div>
-    </div>
-    <div class="btnCount"><span onclick="totalTime()">计算时间</span></div>
+    <div class="btnCount"><span onclick="totalTime()">计算</span></div>
     <div class="btnS"><span onclick="saveWork()">保存</span></div>
     <div class="btn"><span onclick="Endwork()">下班</span></div>
     <div id="addContent" class="addContent iconfont">&#xe61c;</div>
@@ -40,7 +44,8 @@
         <div class="popupMain">
             <div class="popupTitle">提示</div>
             <div class="popupContent">确认下班？</div>
-            <div class="popupBtn"><span class="popupCancel" onclick="popupCancel()">取消</span><span class="popupOk" onclick="popupOk()">确认</span></div>
+            <div class="popupBtn"><span class="popupCancel" onclick="popupCancel()">取消</span><span class="popupOk"
+                    onclick="popupOk()">确认</span></div>
         </div>
     </div>
 </body>
