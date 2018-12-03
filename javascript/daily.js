@@ -234,7 +234,7 @@ $(function () {
             if (obj.attr("id") == 'workContent') {
                 obj.html(`<div>1.【任务bug 000】【已完成】(交接人：郭鑫鹤)</div>`);   //今日工作明细
             } else {
-                obj.html(`<div>1.【任务bug 000】【未完成】(交接人：郭鑫鹤)</div>`)
+                obj.html(`<div>1.【任务bug 000】【未完成】(对接人：郭鑫鹤)</div>`)
             }
 
         } else {
@@ -242,7 +242,7 @@ $(function () {
             if (obj.attr("id") == 'workContent') {
                 obj.append(`<div>${parseInt(_num) + 1}.【任务bug 000】【已完成】(交接人：郭鑫鹤)</div>`);   //今日工作明细
             } else {
-                obj.append(`<div>${parseInt(_num) + 1}.【任务bug 000】【未完成】(交接人：郭鑫鹤)</div>`)
+                obj.append(`<div>${parseInt(_num) + 1}.【任务bug 000】【未完成】(对接人：郭鑫鹤)</div>`)
             }
         }
     })
