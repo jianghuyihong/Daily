@@ -1,5 +1,25 @@
 "use strict"
 
+//下班提示
+let Endwork=()=>{
+    //显示提示窗口
+    $("#popup").css("display","block")
+}
+
+//确认下班提示
+let popupOk=()=>{
+    //关闭提示窗口
+    $("#popup").css("display","none");
+    //调用下班函数
+    EndworkS();
+}
+
+//关闭下班提示
+let popupCancel=()=>{
+    //关闭提示窗口
+    $("#popup").css("display","none")
+}
+
 //下班函数（保存所有数据）
 let EndworkS = () => {
     //计算下班时间
@@ -9,7 +29,7 @@ let EndworkS = () => {
     //保存本周的上班天数
     localStorage.setItem("_workDay", $("#workDay").html()); //设置本地缓存上班天数
     //保存今天的日期
-    localStorage.setItem("_workDay", $("#workDay").html()); //设置本地缓存上班天数
+    localStorage.setItem("_lastDate", $("#date").html()); //设置本地缓存上班日期
     //保存今天工作任务
     localStorage.setItem("_workcontent", $("#workContent").html()); //设置本地缓存今天工作任务
     //保存延迟任务解决方案
@@ -42,13 +62,17 @@ let saveWork = () => {
 let totalTime = () => {
     $("#Endwork").html(new Date().toTimeString().slice(0, 5));  //赋值下班班时间
     //计算多少小时
-    let _h = parseFloat($("#Endwork").html().split(":")[0]).toFixed(1) - parseFloat($("#Startwork").html().split(":")[0]).toFixed(1);  //计算小时
+    let _h = 0;  //计算小时
     let _T = 0; //计算分钟
     if ($("#Endwork").html().split(":")[0] == $("#Startwork").html().split(":")[0]) {
         _T = parseInt($("#Endwork").html().split(":")[1]) - parseInt($("#Startwork").html().split(":")[1]); //计算分钟
+        _h = 0;  //计算小时
     }
     else {
         _T = parseInt($("#Endwork").html().split(":")[1]) + 60 - parseInt($("#Startwork").html().split(":")[1]); //计算分钟
+        if(parseInt($("#Endwork").html().split(":")[1]) - parseInt($("#Startwork").html().split(":")[1])>0){  //如果下班时间减去上班时间大于等于一小时
+            _h = parseFloat($("#Endwork").html().split(":")[0]).toFixed(1) - parseFloat($("#Startwork").html().split(":")[0]).toFixed(1);  //计算小时
+        }
     }
     if (_T >= 0 && _T <= 15) {
         _T = 0.1
@@ -80,22 +104,26 @@ let init = () => {
     let _nowTime = new Date().toTimeString().slice(0, 5);  //本地缓存上班时间
     let _lastDate = localStorage.getItem("_LastDate"); //获取本地缓存上一次的更新上班日期
     if (_nowDate != _lastDate) {
-        localStorage.clear();  //清空所有的本地化缓存
         localStorage.setItem("_LastDate", _nowDate); //本地缓存上班日期
         localStorage.setItem("_nowTime", _nowTime); //本地缓存上班时间
         if (new Date().getDay() == 1) {
-            localStorage.setItem("_workDay", 1); //本地缓存上班天数
+            localStorage.setItem("_workDay", 0); //本地缓存上班天数
             localStorage.setItem("_workTime", 0); //本地缓存上班时长
         }
-
-        $("#date").html(`${_date[0]}年${_date[1]}月${_date[2].length == 1 ? "0" + _date[2] : _date[2]}日`);  //赋值上班日期
-        $("#Startwork").html(new Date().toTimeString().slice(0, 5));  //赋值上班时间
+        let _date = new Date();  //今天的日期
+        let _y = _date.getFullYear();  //今天的年份
+        let _m = _date.getMonth()+1;  //今天的月份
+        let _d = _date.getDate().toString().length == 1 ? "0" + _date.getDate() : _date.getDate();  //今天的日
+        console.log(`${_y}年${_m}月${_d}日`);
+        console.log(_date.getDate().toString().length);
+        $("#date").html(`${_y}年${_m}月${_d}日`);  //赋值上班日期
+        $("#Startwork").html(new Date().toTimeString().slice(0, 5));  //赋值到班时间
         //初始化今天的工作任务
         workInit();
     } else {
         let _date = _lastDate.split("/");  //获取日期
         $("#date").html(`${_date[0]}年${_date[1]}月${_date[2].length == 1 ? "0" + _date[2] : _date[2]}日`);  //赋值上班日期
-        $("#Startwork").html(localStorage.getItem("_nowTime"));  //赋值上班时间
+        $("#Startwork").html(localStorage.getItem("_nowTime"));  //赋值到班时间
         //初始化时长
         if (localStorage.getItem("_workTime") == null) {
             localStorage.setItem("_workTime", 0);
