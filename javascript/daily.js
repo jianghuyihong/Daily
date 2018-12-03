@@ -78,23 +78,40 @@ let totalTime = () => {
         _h = 0;  //计算小时
     }
     else {
-        _T = parseInt($("#Endwork").html().split(":")[1]) + 60 - parseInt($("#Startwork").html().split(":")[1]); //计算分钟
-        _h = parseFloat($("#Endwork").html().split(":")[0]).toFixed(1) - parseFloat($("#Startwork").html().split(":")[0]).toFixed(1);  //计算小时
+        if (parseInt($("#Endwork").html().split(":")[1]) <= parseInt($("#Startwork").html().split(":")[1])) {
+            _T = parseInt($("#Endwork").html().split(":")[1]) + 60 - parseInt($("#Startwork").html().split(":")[1]); //计算分钟
+            _h = parseFloat($("#Endwork").html().split(":")[0]).toFixed(1) - parseFloat($("#Startwork").html().split(":")[0]).toFixed(1) - 1;  //计算小时
+        } else {
+            _T = parseInt($("#Endwork").html().split(":")[1]) + 60 - parseInt($("#Startwork").html().split(":")[1]); //计算分钟
+            _h = parseFloat($("#Endwork").html().split(":")[0]).toFixed(1) - parseFloat($("#Startwork").html().split(":")[0]).toFixed(1);  //计算小时
+        }
     }
-    if (_T >= 0 && _T <= 15) {
+    if (_T >= 0 && _T <= 6) {
         _T = 0.1
     }
-    if (_T > 15 && _T <= 25) {
+    if (_T > 6 && _T <= 12) {
         _T = 0.2
     }
-    if (_T > 25 && _T <= 35) {
+    if (_T > 12 && _T <= 18) {
         _T = 0.3
     }
-    if (_T > 35 && _T <= 45) {
+    if (_T > 18 && _T <= 24) {
         _T = 0.4
     }
-    if (_T > 45 && _T <= 55) {
+    if (_T > 24 && _T <= 30) {
         _T = 0.5
+    }
+    if (_T >= 30 && _T <= 36) {
+        _T = 0.6
+    }
+    if (_T > 36 && _T <= 42) {
+        _T = 0.7
+    }
+    if (_T > 40 && _T <= 48) {
+        _T = 0.8
+    }
+    if (_T > 48 && _T <= 54) {
+        _T = 0.9
     }
     if (_T >= 55) {
         _T = 1
