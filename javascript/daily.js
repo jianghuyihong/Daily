@@ -35,8 +35,6 @@ let EndworkS = () => {
     localStorage.setItem("_lastDate", $("#date").html()); //设置本地缓存上班日期
     //保存至今剩余任务数
     localStorage.setItem("_SurplusWork", _Surplus); //设置本地缓存至今剩余任务数
-    //保存今天的历史任务数
-    localStorage.setItem("_historyWork", parseInt($("#historyWork").html()) + parseInt($("#nowAddWork").html())); //设置本地缓存今天的历史任务数
     //保存今日工作明细
     localStorage.setItem("_workcontent", $("#workContent").html()); //设置本地缓存今日工作明细
     // //保存延迟任务解决方案
@@ -124,11 +122,13 @@ let totalTime = () => {
 
     //获取至今剩余任务数计算至今剩余任务数
     let _Surplus = localStorage.getItem("_SurplusWork") == undefined ? 0 : localStorage.getItem("_SurplusWork");
-    if (_Surplus == 0)
-        _Surplus = parseInt($("#nowAddWork").html()) - $("#workContent>div").length;
-    else
-        _Surplus = parseInt(_Surplus) + parseInt($("#nowAddWork").html()) - $("#workContent>div").length;
 
+    if (_Surplus == 0){
+        _Surplus = parseInt($("#nowAddWork").html()) - $("#workContent>div").length;
+    }
+    else{
+        _Surplus = parseInt(_Surplus) + parseInt($("#nowAddWork").html()) - $("#workContent>div").length;
+    }
     //计算至今剩余任务数
     $("#SurplusWork").html(_Surplus);
 
@@ -155,7 +155,7 @@ let init = () => {
         console.log(_date.getDate().toString().length);
         $("#date").html(`${_y}年${_m}月${_d}日`);  //赋值上班日期
         $("#Startwork").html(new Date().toTimeString().slice(0, 5));  //赋值到班时间
-        $("#historyWork").html(localStorage.getItem("_historyWork") == undefined ? 0 : localStorage.getItem("_historyWork"));  //赋值历史任务数
+        $("#historyWork").html(localStorage.getItem("_SurplusWork") == undefined ? 0 : localStorage.getItem("_SurplusWork"));  //赋值历史任务数
         $("#nowAddWork").html(0); //赋值今日新增任务数
         //初始化今天的工作任务
         workInit();
@@ -172,7 +172,7 @@ let init = () => {
             localStorage.setItem("_workDay", 0);
         }
 
-        $("#historyWork").html(localStorage.getItem("_historyWork") == undefined ? 0 : localStorage.getItem("_historyWork"));  //赋值历史任务数
+        $("#historyWork").html(localStorage.getItem("_SurplusWork") == undefined ? 0 : localStorage.getItem("_SurplusWork"));  //赋值历史任务数
         $("#nowAddWork").html(localStorage.getItem("_nowAddWork") == undefined ? 0 : localStorage.getItem("_nowAddWork")); //赋值今日新增任务数
         //初始化今天的工作任务
         workInit();
