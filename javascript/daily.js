@@ -35,8 +35,8 @@ let EndworkS = () => {
     localStorage.setItem("_lastDate", $("#date").html()); //设置本地缓存上班日期
     //保存至今剩余任务数
     localStorage.setItem("_SurplusWork", _Surplus); //设置本地缓存至今剩余任务数
-    //保存今日工作明细
-    localStorage.setItem("_workcontent", $("#workContent").html()); //设置本地缓存今日工作明细
+    // //保存今日工作明细
+    // localStorage.setItem("_workcontent", $("#workContent").html()); //设置本地缓存今日工作明细
     // //保存延迟任务解决方案
     // localStorage.setItem("_workContentDelay", $("#workContentDelay").html()); //设置本地缓存延迟任务解决方案
     // //保存其他工作及进度
@@ -251,15 +251,19 @@ $(function () {
             if (obj.attr("id") == 'workContent') {
                 obj.html(`<div>1.【任务bug 000】【已完成】(交接人：郭鑫鹤)</div>`);   //今日工作明细
             } else {
-                obj.html(`<div>1.【任务bug 000】【未完成】(对接人：郭鑫鹤)</div>`)
+                obj.html(`<div>1.【任务bug 000】【未完成】(对接人：郭鑫鹤)</div>`);   //明天日工作计划
             }
 
         } else {
-            let _num = obj.find("div").eq(obj.children().length - 1).text().split("、")[0];  //获取子元素的最后一位的序号
+            let _num = obj.find("div").eq(obj.children().length - 1).text().split(".")[0];  //获取子元素的最后一位的序号
             if (obj.attr("id") == 'workContent') {
                 obj.append(`<div>${parseInt(_num) + 1}.【任务bug 000】【已完成】(交接人：郭鑫鹤)</div>`);   //今日工作明细
+                console.log(_num);
+                console.log(parseInt(_num) + 1);
             } else {
-                obj.append(`<div>${parseInt(_num) + 1}.【任务bug 000】【未完成】(对接人：郭鑫鹤)</div>`)
+                obj.append(`<div>${parseInt(_num) + 1}.【任务bug 000】【未完成】(对接人：郭鑫鹤)</div>`);   //明天日工作计划
+                console.log(_num);
+                console.log(parseInt(_num) + 1);
             }
         }
     })
