@@ -23,8 +23,7 @@ let popupCancel = () => {
 //下班函数（保存所有数据）
 let EndworkS = () => {
     //获取至今剩余任务数计算至今剩余任务数
-    let _Surplus = localStorage.getItem("_SurplusWork") == undefined ? 0 : localStorage.getItem("_SurplusWork");
-    _Surplus = _Surplus + parseInt($("#nowAddWork").html()) - $("#workContent>div").length;
+    let _Surplus = parseInt($("#SurplusWork").html());
     //计算下班时间
     totalTime();
     //保存本周的上班时长
