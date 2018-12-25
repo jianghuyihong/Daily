@@ -122,11 +122,18 @@ let totalTime = () => {
     //获取至今剩余任务数计算至今剩余任务数
     let _Surplus = localStorage.getItem("_SurplusWork") == undefined ? 0 : localStorage.getItem("_SurplusWork");
 
+    //遍历已完成的任务
+    let _overWork =0;
+    for(let i=0;i<$("#workContentWrap>div").length;i++){
+         if($("#workContentWrap>div").eq(i).text().indexOf("已完成")>-1){
+            _overWork++;
+         }
+    }
     if (_Surplus == 0){
-        _Surplus = parseInt($("#nowAddWork").html()) - $("#workContent>div").length;
+        _Surplus = parseInt($("#nowAddWork").html()) - _overWork;
     }
     else{
-        _Surplus = parseInt(_Surplus) + parseInt($("#nowAddWork").html()) - $("#workContent>div").length;
+        _Surplus = parseInt(_Surplus) + parseInt($("#nowAddWork").html()) - _overWork;
     }
     //计算至今剩余任务数
     $("#SurplusWork").html(_Surplus);
@@ -267,3 +274,4 @@ $(function () {
         }
     })
 })
+
