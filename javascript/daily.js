@@ -128,10 +128,7 @@ let totalTime = () => {
          if($("#workContent>div").eq(i).text().indexOf("已完成")>-1){
             _overWork++;
          }
-         console.log($("#workContent>div").length)
-         console.log(_overWork)
     }
-    console.log(_overWork)
     if (_Surplus == 0){
         _Surplus = parseInt($("#nowAddWork").html()) - _overWork;
     }
