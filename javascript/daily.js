@@ -124,11 +124,14 @@ let totalTime = () => {
 
     //遍历已完成的任务
     let _overWork =0;
-    for(let i=0;i<$("#workContentWrap>div").length;i++){
-         if($("#workContentWrap>div").eq(i).text().indexOf("已完成")>-1){
+    for(let i=0;i<$("#workContent>div").length;i++){
+         if($("#workContent>div").eq(i).text().indexOf("已完成")>-1){
             _overWork++;
          }
+         console.log($("#workContent>div").length)
+         console.log(_overWork)
     }
+    console.log(_overWork)
     if (_Surplus == 0){
         _Surplus = parseInt($("#nowAddWork").html()) - _overWork;
     }
