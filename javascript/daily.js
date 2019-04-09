@@ -44,6 +44,113 @@ let EndworkS = () => {
     // localStorage.setItem("_workContentFatch", $("#workContentFatch").html()); //设置本地缓存收集到的需求
     //保存明日工作计划
     localStorage.setItem("_workContentPlay", $("#workContentPlay").html()); //设置本地缓存明日工作计划
+
+    let _week = localStorage.getItem("_weekWork");
+    //明日工作计划
+    localStorage.setItem("_weekWork", `${$("#workContent").html()}${_week}`); //设置本地缓存明日工作计划
+}
+
+//生成周报
+let weekwork = () => {
+    let _weekWork = ``;
+    let _weekWorkIndex = 1;  //周报序列号
+    console.log(localStorage.getItem("_weekWork"))
+    console.log(JSON.parse(localStorage.getItem("_weekWork")))
+    let _week = JSON.parse(localStorage.getItem("_weekWork"));
+    let _l = Object.keys(_week).length;  //获取健名数组
+    console.log(_l)
+    for (let i = 0; i < _l; i++) {
+        let _msg = Object.keys(_week)[i];  //获取n个健名
+        console.log(_msg)
+        console.log(_week[_msg])
+        for (let j = 0; j < _week[_msg].length; j++) {  //循环n个健名的键值
+            _weekWork += `${_weekWorkIndex}、${_week[_msg][i]}`;   //赋值一条记录
+            _weekWorkIndex += 1;  //序号自增
+        }
+    }
+    console.log("生成周报");
+    console.log(_weekWork);
+
+    let _month = new Date().getMonth() + 1;  //获取月份
+
+    //列标题
+    let str = `<tr><td colspan="5" style="text-align:center;font-weight: bolder;font-size: 23px;">${_month}月计划总结</td></tr>
+    <tr><td  colspan="2" style="text-align:center">本月工作计划</td><td style="text-align:center">下月工作计划</td><td  colspan="2" style="text-align:center">备注</td></tr>
+    <tr><td style="text-align:center">周</td><td style="text-align:center">周计划</td><td style="text-align:center">周总结</td><td style="text-align:center">上级评估</td><td style="text-align:center">备注</td></tr>
+    <tr><td style="text-align:center">${weekDate().fw}</td><td style="text-align:center"></td><td>${_weekWork}</td><td></td><td></td></tr>
+    <tr><td style="text-align:center">${weekDate().nw}</td><td>${$("#workContentPlay").text()}</td><td></td><td></td><td></td></tr>
+    `;
+    //Worksheet名
+    let worksheet = `${_month}月`
+    let uri = 'data:application/vnd.ms-excel;base64,';
+
+    //下载的表格模板数据
+    let template = `<html xmlns:o="urn:schemas-microsoft-com:office:office" 
+      xmlns:x="urn:schemas-microsoft-com:office:excel" 
+      xmlns="http://www.w3.org/TR/REC-html40"><meta charset="utf-8"><title>生成周报</title>
+      <head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>
+        <x:Name>${worksheet}</x:Name>
+        <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet>
+        </x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+        </head><body><table>${str}</table></body></html>`;
+    //下载模板
+    window.location.href = uri + base64(template)
+    //输出base64编码
+    function base64(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+}
+
+
+//获取本周的日期
+let weekDate = () => {
+    let json = {
+        fw: ``
+        , nw: ``
+    }
+    let _date = new Date();
+    let _day = _date.getDay();   //获取星期几
+    let _year = _date.getFullYear();   //获取年
+    let _month = _date.getMonth();   //获取月
+    let _data = _date.getDate();   //获取日
+    let _y1, _m1, _d1, _y, _m, _d; //本周的年月日
+    let _Ny1, _Nm1, _Nd1, _Ny, _Nm, _Nd; //下周的年月日
+    if (_day == 0) {  //星期天
+        _y1 = new Date(_year, _month, _data - 6).getFullYear();  //获取周的第一天的年
+        _m1 = new Date(_year, _month, _data - 6).getMonth() + 1;  //获取周的第一天的月
+        _d1 = new Date(_year, _month, _data - 6).getFullYear();  //获取周的第一天的日
+
+        _y = _year;  //获取本周的最后一天的年
+        _m = _month + 1;  //获本取周的最后一天的月
+        _d = _data;  //获取本周的最后一天的日
+
+        _Ny1 = new Date(_y, _m - 1, _d + 1).getFullYear();  //获取下周的第一天的年
+        _Nm1 = new Date(_y, _m - 1, _d + 1).getMonth() + 1;  //获取下周的第一天的月
+        _Nd1 = new Date(_y, _m - 1, _d + 1).getDate();  //获取下周的第一天的日
+
+        _Ny = new Date(_y, _m - 1, _d + 7).getFullYear();  //获取下周的最后一天的年
+        _Nm = new Date(_y, _m - 1, _d + 7).getMonth() + 1;  //获取下周的最后一天的月
+        _Nd = new Date(_y, _m - 1, _d + 7).getDate();  //获取下周的最后一天的日
+    } else {
+        _y1 = new Date(_year, _month, _data - (_day - 1)).getFullYear();  //获取周的第一天的年
+        _m1 = new Date(_year, _month, _data - (_day - 1)).getMonth() + 1;  //获取周的第一天的月
+        _d1 = new Date(_year, _month, _data - (_day - 1)).getDate();  //获取周的第一天的日
+
+        _y = new Date(_year, _month, _data + (7 - _day)).getFullYear();  //获取周的最后一天的年
+        _m = new Date(_year, _month, _data + (7 - _day)).getMonth() + 1;  //获取周的最后一天的月
+        _d = new Date(_year, _month, _data + (7 - _day)).getDate();  //获取周的最后一天的日
+
+
+        _Ny1 = new Date(_y, _m - 1, _d + 1).getFullYear();  //获取下周的第一天的年
+        _Nm1 = new Date(_y, _m - 1, _d + 1).getMonth() + 1;  //获取下周的第一天的月
+        _Nd1 = new Date(_y, _m - 1, _d + 1).getDate();  //获取下周的第一天的日
+
+        _Ny = new Date(_y, _m - 1, _d + 7).getFullYear();  //获取下周的最后一天的年
+        _Nm = new Date(_y, _m - 1, _d + 7).getMonth() + 1;  //获取下周的最后一天的月
+        _Nd = new Date(_y, _m - 1, _d + 7).getDate();  //获取下周的最后一天的日
+    }
+    json.fw = `${_y1}.${_m1}.${_d1}-${_y}.${_m}.${_d}`;  //本周范围
+    json.nw = `${_Ny1}.${_Nm1}.${_Nd1}-${_Ny}.${_Nm}.${_Nd}`;  //下周范围
+    console.log(json)
+    return json;
 }
 
 
@@ -61,6 +168,33 @@ let saveWork = () => {
     // localStorage.setItem("_workContentFatch", $("#workContentFatch").html()); //设置本地缓存收集到的需求
     //明日工作计划
     localStorage.setItem("_workContentPlay", $("#workContentPlay").html()); //设置本地缓存明日工作计划
+
+    //查询周报字段
+    let _week = JSON.parse(localStorage.getItem("_weekWork"));
+    let _daywork = $("#workContent").text().replace(/([1-9][0-9]*)+(\.)/g, "$$$").replace(/\s|\xA0/g, "").split("$$");  //获取当日的工作数据
+    _daywork.splice(0, 1);  //删除第一项
+    console.log($.trim(_week));
+    console.log(_daywork);
+    //循环未完成的则删除
+    for (let i = 0; i < _daywork.length; i++) {
+        if (_daywork[i].indexOf("未完成") > -1) {
+            _daywork.splice(i, 1);  //删除该项
+        }
+    }
+    let _day = new Date().getDay();  //获取星期几
+    if (_day == 1) {
+        _week = {};  //星期一清空所有数据
+        _week = {
+            1: _daywork //添加当天的工作数据
+        }
+    } else {
+        _week[_day] = _daywork;  //添加当天的工作数据
+    }
+    console.log(_week)
+    localStorage.setItem("_weekWork", JSON.stringify(_week));
+
+    console.log(localStorage.getItem("_weekWork"));
+    console.log(JSON.parse(localStorage.getItem("_weekWork")))
 }
 
 
@@ -123,16 +257,16 @@ let totalTime = () => {
     let _Surplus = localStorage.getItem("_SurplusWork") == undefined ? 0 : localStorage.getItem("_SurplusWork");
 
     //遍历已完成的任务
-    let _overWork =0;
-    for(let i=0;i<$("#workContent>div").length;i++){
-         if($("#workContent>div").eq(i).text().indexOf("已完成")>-1){
+    let _overWork = 0;
+    for (let i = 0; i < $("#workContent>div").length; i++) {
+        if ($("#workContent>div").eq(i).text().indexOf("已完成") > -1) {
             _overWork++;
-         }
+        }
     }
-    if (_Surplus == 0){
+    if (_Surplus == 0) {
         _Surplus = parseInt($("#nowAddWork").html()) - _overWork;
     }
-    else{
+    else {
         _Surplus = parseInt(_Surplus) + parseInt($("#nowAddWork").html()) - _overWork;
     }
     //计算至今剩余任务数
@@ -142,6 +276,7 @@ let totalTime = () => {
 
 //初始化今天的数据
 let init = () => {
+    weekDate();
     //获取今天上班时间及日期
     let _nowDate = new Date().toLocaleDateString();  //本地缓存上班日期
     let _nowTime = new Date().toTimeString().slice(0, 5);  //本地缓存上班时间

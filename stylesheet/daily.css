@@ -15,6 +15,7 @@
 
 .btn span,
 .btnCount span,
+.btnW span,
 .btnS span {
   cursor: pointer;
   background: #ccc;
@@ -32,13 +33,18 @@
 }
 
 .btnS span {
+  right: 240px;
+  background: #86c3e8;
+  color: #fff;
+}
+.btnW span {
   right: 120px;
   background: #86c3e8;
   color: #fff;
 }
 
 .btnCount span {
-  right: 240px;
+  right: 360px;
   background: #86c3e8;
   color: #fff;
 }
@@ -49,7 +55,7 @@
   color: #ccc;
 }
 
-.btn span:hover {
+.btn span:hover,.btnW span:hover {
   background: red;
   color: #fff;
 }
