@@ -44,14 +44,11 @@ let EndworkS = () => {
     // localStorage.setItem("_workContentFatch", $("#workContentFatch").html()); //设置本地缓存收集到的需求
     //保存明日工作计划
     localStorage.setItem("_workContentPlay", $("#workContentPlay").html()); //设置本地缓存明日工作计划
-
-    let _week = localStorage.getItem("_weekWork");
-    //明日工作计划
-    localStorage.setItem("_weekWork", `${$("#workContent").html()}${_week}`); //设置本地缓存明日工作计划
 }
 
 //生成周报
 let weekwork = () => {
+    console.log(localStorage.getItem("_weekWork"))
     let _weekWork = ``;
     let _weekWorkIndex = 1;  //周报序列号
     console.log(localStorage.getItem("_weekWork"))
@@ -64,7 +61,8 @@ let weekwork = () => {
         console.log(_msg)
         console.log(_week[_msg])
         for (let j = 0; j < _week[_msg].length; j++) {  //循环n个健名的键值
-            _weekWork += `${_weekWorkIndex}、${_week[_msg][i]}`;   //赋值一条记录
+            _weekWork += `${_weekWorkIndex}、${_week[_msg][j]} `;   //赋值一条记录
+            console.log(_week[_msg][j])
             _weekWorkIndex += 1;  //序号自增
         }
     }
