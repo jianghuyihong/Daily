@@ -255,19 +255,19 @@ $(function () {
     $("#addContent").click(function () {
         if (obj.html() == "无") {
             if (obj.attr("id") == 'workContent') {
-                obj.html(`<div>1.【任务bug 000】【已完成】(交接人：郭鑫鹤)</div>`);   //今日工作明细
+                obj.html(`<div>1.【任务bug 000】【已完成】(交接人：李喜婷)</div>`);   //今日工作明细
             } else {
-                obj.html(`<div>1.【任务bug 000】【未完成】(对接人：郭鑫鹤)</div>`);   //明天日工作计划
+                obj.html(`<div>1.【任务bug 000】【未完成】(对接人：李喜婷)</div>`);   //明天日工作计划
             }
 
         } else {
             let _num = obj.find("div").eq(obj.children().length - 1).text().split(".")[0];  //获取子元素的最后一位的序号
             if (obj.attr("id") == 'workContent') {
-                obj.append(`<div>${parseInt(_num) + 1}.【任务bug 000】【已完成】(交接人：郭鑫鹤)</div>`);   //今日工作明细
+                obj.append(`<div>${parseInt(_num) + 1}.【任务bug 000】【已完成】(交接人：李喜婷)</div>`);   //今日工作明细
                 console.log(_num);
                 console.log(parseInt(_num) + 1);
             } else {
-                obj.append(`<div>${parseInt(_num) + 1}.【任务bug 000】【未完成】(对接人：郭鑫鹤)</div>`);   //明天日工作计划
+                obj.append(`<div>${parseInt(_num) + 1}.【任务bug 000】【未完成】(对接人：李喜婷)</div>`);   //明天日工作计划
                 console.log(_num);
                 console.log(parseInt(_num) + 1);
             }
